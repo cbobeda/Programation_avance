@@ -4,6 +4,7 @@
 using namespace sf;
 
 RenderWindow window(VideoMode(800,600),"SMFL");
+int Drawsize = 10;
 Texture createimage(int x, int y)
 {
     Image image;
@@ -13,14 +14,14 @@ Texture createimage(int x, int y)
     return texture;
 }
 
-Image dessine(int x, int y,Texture texture)
+Image dessine(int x, int y,int size,Texture texture)
 {
     Image imageBuffer = texture.copyToImage();
     if (Mouse::getPosition(window).x > 0 && Mouse::getPosition(window).y > 0)
     {
-        for (int x = Mouse::getPosition(window).x - 10; x < Mouse::getPosition(window).x + 10; x++)
+        for (int x = Mouse::getPosition(window).x - size; x < Mouse::getPosition(window).x + size; x++)
         {
-            for (int y = Mouse::getPosition(window).y - 10; y < Mouse::getPosition(window).y + 10; y++)
+            for (int y = Mouse::getPosition(window).y - size; y < Mouse::getPosition(window).y + size; y++)
             {
                 if (y > 0 && x > 0)
                 {
@@ -49,7 +50,23 @@ void main()
                 window.close(); // Fermer la fenêtre
         }
         std::cout <<  Mouse::getPosition(window).x << ':' << Mouse::getPosition(window).y<< std::endl;
-        texture.update(dessine(Mouse::getPosition(window).x,Mouse::getPosition(window).y,texture));
+        if (Keyboard::isKeyPressed(Keyboard::Left))
+        {
+            Drawsize--;
+            std::cout << Drawsize << std::endl;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Right))
+        {
+            Drawsize++;
+        }
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            texture.update(dessine(Mouse::getPosition(window).x,Mouse::getPosition(window).y,Drawsize,texture));
+        }
+        if (Mouse::isButtonPressed(Mouse::Right))
+        {
+            texture.update(createimage(window.getSize().x,window.getSize().y));
+        }
         texture.setSmooth(true);
         // Effacer la fenêtre
         window.clear();
