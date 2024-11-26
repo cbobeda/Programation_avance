@@ -1,10 +1,9 @@
 ﻿#pragma once
-
-class Rectangle
+#include <SFML/Graphics.hpp>
+using namespace sf;
+class shapes
 {
-private:
-    int x, y, width, height;
-    
 public:
-    
+    Image line(int dx1, int dy1, int dx2, int dy2, Color couleur, Texture texture);
+    Image square(int x1, int y1, int x2, int y2,Color couleur,Texture texture);
 };
