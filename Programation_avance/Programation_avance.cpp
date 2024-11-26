@@ -9,7 +9,7 @@ RenderWindow window(VideoMode(1920,1080),"SMFL",Style::Fullscreen);
 shapes shapeCreator;
 Color colorTab [8] = {Color::Black,Color::Blue,Color::Cyan,Color::Green,Color::Magenta,Color::Red,Color::White,Color::Yellow};
 int currentColor = 0;
-int Drawsize = 5;
+int Drawsize = 15;
 int newPosX;
 int newPosY;
 int oldX;
@@ -96,7 +96,7 @@ void changeColor(Texture texture)
 void main()
 {
     Texture texture = createimage(window.getSize().x,window.getSize().y);
-    texture.update(shapeCreator.square(100,100,400,400,colorTab[currentColor],texture));
+    texture.update(shapeCreator.square(100,100,400,400,Drawsize,colorTab[currentColor],texture));
     window.setFramerateLimit(60);
     // Boucle principale
     while (window.isOpen())
@@ -134,7 +134,7 @@ void main()
             newPosY = Mouse::getPosition(window).y;
             if (newPosX != oldX || newPosY != oldY)
             {
-                texture.update(shapeCreator.line(oldX,oldY,newPosX,newPosY,colorTab[currentColor],texture));
+                texture.update(shapeCreator.line(oldX,oldY,newPosX,newPosY,Drawsize,colorTab[currentColor],texture));
                 oldX = Mouse::getPosition(window).x;
                 oldY = Mouse::getPosition(window).y;
             }

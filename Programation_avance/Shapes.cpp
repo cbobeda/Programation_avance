@@ -4,7 +4,7 @@
 
 using namespace sf;
 
-Image shapes::line(int dx1, int dy1, int dx2, int dy2, Color couleur, Texture texture)
+Image shapes::line(int dx1, int dy1, int dx2, int dy2,int size, Color couleur, Texture texture)
 {
     Image imageBuffer = texture.copyToImage();
     
@@ -20,8 +20,18 @@ Image shapes::line(int dx1, int dy1, int dx2, int dy2, Color couleur, Texture te
         // Vérifier si les coordonnées sont dans les limites de l'image
         if (dx1 >= 0 && dx1 < imageBuffer.getSize().x && dy1 >= 0 && dy1 < imageBuffer.getSize().y)
         {
+            for (int x = dx1 - size; x < dx1 + size; x++)
+            {
+                for (int y = dy1 - size; y < dy1 + size; y++)
+                {
+                    if (y > 0 && x > 0)
+                    {
+                        imageBuffer.setPixel(x,y,couleur);
+                    }
+                }
+            }
             // Dessiner le pixel à la position actuelle
-            imageBuffer.setPixel(dx1, dy1, couleur);
+            //imageBuffer.setPixel(dx1, dy1, couleur);
         }
 
         // Si on atteint le point final, sortir de la boucle
@@ -44,12 +54,12 @@ Image shapes::line(int dx1, int dy1, int dx2, int dy2, Color couleur, Texture te
     return imageBuffer;
 }
 
-Image shapes::square(int x1, int y1, int x2, int y2,Color couleur,Texture texture)
+Image shapes::square(int x1, int y1, int x2, int y2,int size,Color couleur,Texture texture)
 {
-    texture.update(line(x1, y1, x2, y1, couleur, texture));
-    texture.update(line(x1, y1, x1, y2, couleur, texture));
-    texture.update(line(x2, y2, x2, y1, couleur, texture));
-    texture.update(line(x2, y2, x1, y2, couleur, texture));
+    texture.update(line(x1, y1, x2, y1,size, couleur, texture));
+    texture.update(line(x1, y1, x1, y2,size, couleur, texture));
+    texture.update(line(x2, y2, x2, y1,size, couleur, texture));
+    texture.update(line(x2, y2, x1, y2,size, couleur, texture));
     Image imageBuffer = texture.copyToImage();
     return imageBuffer;
 }
