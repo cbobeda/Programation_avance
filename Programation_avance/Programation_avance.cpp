@@ -105,7 +105,7 @@ Image changeColor(Texture texture)
                 isSquaring = false;
             }
         }
-         return shapeCreator.square(pos1,pos2,Drawsize,colorTab[currentColor],texture);
+         texture.update(shapeCreator.square(pos1,pos2,Drawsize,colorTab[currentColor],texture));
     }
     return texture.copyToImage();
 }
@@ -132,7 +132,7 @@ void main()
                 drawing = false;
             }
         }
-        if (drawing) {
+        if (drawing && !isSquaring) {
             Vector2i currentMousePos = Mouse::getPosition(window);
             if (currentMousePos != prevMousePos) {
                 shapeCreator.line(imageBuffer, prevMousePos, currentMousePos,Drawsize, colorTab[currentColor],texture);

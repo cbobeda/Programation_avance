@@ -41,10 +41,10 @@ Image shapes::line(Image& image, Vector2i start, Vector2i end,int size, Color co
 Image shapes::square(Vector2i start, Vector2i end ,int size,Color couleur,Texture texture)
 {
     Image imageBuffer = texture.copyToImage();
-    line(imageBuffer,Vector2i (start.x, start.y), Vector2i(end.x, start.y),size, couleur, texture);
-    line(imageBuffer,Vector2i(start.x, start.y), Vector2i(start.x, end.y),size, couleur, texture);
-    line(imageBuffer,Vector2i(end.x, end.y), Vector2i(end.x, start.y),size, couleur, texture);
-    line(imageBuffer,Vector2i(end.x, end.y), Vector2i(start.x, end.y),size, couleur, texture);
+    texture.update(line(imageBuffer,Vector2i (start.x, start.y), Vector2i(end.x, start.y),size, couleur, texture));
+    texture.update(line(imageBuffer,Vector2i(start.x, start.y), Vector2i(start.x, end.y),size, couleur, texture));
+    texture.update(line(imageBuffer,Vector2i(end.x, end.y), Vector2i(end.x, start.y),size, couleur, texture));
+    texture.update(line(imageBuffer,Vector2i(end.x, end.y), Vector2i(start.x, end.y),size, couleur, texture));
 
     imageBuffer = texture.copyToImage();
     return imageBuffer;
