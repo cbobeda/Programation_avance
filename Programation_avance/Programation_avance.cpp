@@ -5,16 +5,15 @@
 
 using namespace sf;
 
-RenderWindow window(VideoMode(1920,1080),"SMFL",Style::Fullscreen);
+RenderWindow window(VideoMode(1920,1080),"SMFL");
 shapes shapeCreator;
 Color colorTab [8] = {Color::Black,Color::Blue,Color::Cyan,Color::Green,Color::Magenta,Color::Red,Color::White,Color::Yellow};
 int currentColor = 0;
 int Drawsize = 15;
-int newPosX;
-int newPosY;
-int oldX;
-int oldY;
-bool drawing;
+Vector2i pos1;
+Vector2i pos2;
+bool drawing = false;
+bool isSquaring = false;
 button changeColor0(0,0,50,50);
 button changeColor1(100,0,50,50);
 button changeColor2(200,0,50,50);
@@ -52,7 +51,7 @@ Image size(int dx,int dy,int size,Color couleur,Texture texture)
 }
 
 
-void changeColor(Texture texture)
+Image changeColor(Texture texture)
 {
 
     if (changeColor0.check(Mouse::getPosition(window).x, Mouse::getPosition(window).y))
@@ -87,32 +86,59 @@ void changeColor(Texture texture)
     {
         currentColor = 7;
     }
-    else if (square.check(Mouse::getPosition(window).x, Mouse::getPosition(window).y))
+    else if (square.check(Mouse::getPosition(window).x, Mouse::getPosition(window).y) || isSquaring)
     {
-        
+        int x1 = 0;
+        int y1 = 0;
+        int x2 = 0;
+        int y2 = 0;
+        isSquaring  = true;
+        while (isSquaring)
+        {
+            if (Mouse::isButtonPressed(Mouse::Left) && Keyboard::isKeyPressed(Keyboard::A))
+            {
+                pos1 = Mouse::getPosition(window);
+            }
+            else if (Mouse::isButtonPressed(Mouse::Left) && Keyboard::isKeyPressed(Keyboard::E))
+            {
+                pos2 = Mouse::getPosition(window);
+                isSquaring = false;
+            }
+        }
+         return shapeCreator.square(pos1,pos2,Drawsize,colorTab[currentColor],texture);
     }
+    return texture.copyToImage();
 }
 
 void main()
 {
     Texture texture = createimage(window.getSize().x,window.getSize().y);
-    texture.update(shapeCreator.square(100,100,400,400,Drawsize,colorTab[currentColor],texture));
     window.setFramerateLimit(60);
+    Vector2i prevMousePos;
     // Boucle principale
     while (window.isOpen())
     {
         Image imageBuffer = texture.copyToImage();
         Event event;
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
-                window.close(); // Fermer la fenêtre
+            if (event.type == Event::Closed) {
+                window.close();
+            }
             else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
                 drawing = true;
-                oldX = Mouse::getPosition(window).x;
-                oldY = Mouse::getPosition(window).y;
+                prevMousePos = Mouse::getPosition(window);
             }
             else if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
                 drawing = false;
+            }
+        }
+        if (drawing) {
+            Vector2i currentMousePos = Mouse::getPosition(window);
+            if (currentMousePos != prevMousePos) {
+                shapeCreator.line(imageBuffer, prevMousePos, currentMousePos,Drawsize, colorTab[currentColor],texture);
+                prevMousePos = currentMousePos;
+
+                texture.update(imageBuffer);
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Left))
@@ -127,22 +153,16 @@ void main()
         {
             texture.update(createimage(window.getSize().x,window.getSize().y));
         }
-        if (drawing)
+        if (Keyboard::isKeyPressed(Keyboard::S))
         {
-            std::cout << oldX << " " << oldY << std::endl;
-            newPosX = Mouse::getPosition(window).x;
-            newPosY = Mouse::getPosition(window).y;
-            if (newPosX != oldX || newPosY != oldY)
-            {
-                texture.update(shapeCreator.line(oldX,oldY,newPosX,newPosY,Drawsize,colorTab[currentColor],texture));
-                oldX = Mouse::getPosition(window).x;
-                oldY = Mouse::getPosition(window).y;
-            }
+            Image buffer;
+            buffer = texture.copyToImage();
+            buffer.saveToFile("image.bmp");
         }
         texture.setSmooth(true);
         // Effacer la fenêtre
         window.clear();
-        changeColor(texture);
+        texture.update( changeColor(texture));
         // Dessiner la forme
         Sprite sprite(texture);
         window.draw(sprite);
