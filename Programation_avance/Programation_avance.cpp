@@ -51,7 +51,7 @@ Image size(int dx,int dy,int size,Color couleur,Texture texture)
 }
 
 
-Image changeColor(Texture texture)
+Texture changeColor(Texture texture)
 {
 
     if (changeColor0.check(Mouse::getPosition(window).x, Mouse::getPosition(window).y))
@@ -105,15 +105,17 @@ Image changeColor(Texture texture)
                 isSquaring = false;
             }
         }
-         texture.update(shapeCreator.square(pos1,pos2,Drawsize,colorTab[currentColor],texture));
+        Image imageBuffer = texture.copyToImage();
+        imageBuffer = shapeCreator.square(imageBuffer,pos1,pos2,Drawsize,colorTab[currentColor],texture);
+        texture.update(imageBuffer);
     }
-    return texture.copyToImage();
+    return texture;
 }
 
 void main()
 {
     Texture texture = createimage(window.getSize().x,window.getSize().y);
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(144);
     Vector2i prevMousePos;
     // Boucle principale
     while (window.isOpen())
@@ -141,6 +143,7 @@ void main()
                 texture.update(imageBuffer);
             }
         }
+        
         if (Keyboard::isKeyPressed(Keyboard::Left))
         {
             Drawsize--;
@@ -157,12 +160,12 @@ void main()
         {
             Image buffer;
             buffer = texture.copyToImage();
-            buffer.saveToFile("image.bmp");
+            imageBuffer.saveToFile("drawing.bmp");
         }
         texture.setSmooth(true);
         // Effacer la fenêtre
         window.clear();
-        texture.update( changeColor(texture));
+        texture = changeColor(texture);
         // Dessiner la forme
         Sprite sprite(texture);
         window.draw(sprite);

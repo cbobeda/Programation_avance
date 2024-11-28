@@ -5,5 +5,5 @@ class shapes
 {
 public:
     Image line(Image& image, Vector2i start, Vector2i end,int size, Color color,Texture texture);
-    Image square(Vector2i start, Vector2i end ,int size,Color couleur,Texture texture);
+    Image square(Image imageBuffer,Vector2i start, Vector2i end ,int size,Color couleur,Texture texture);
 };
