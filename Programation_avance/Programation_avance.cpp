@@ -22,7 +22,7 @@ button changeColor4(400,0,50,50);
 button changeColor5(500,0,50,50);
 button changeColor6(600,0,50,50);
 button changeColor7(700,0,50,50);
-button square(800,0,50,50);
+button square(window.getSize().x-65,5,50,50);
 Texture createimage(int x, int y)
 {
     Image image;
@@ -170,15 +170,15 @@ void main()
         // Dessiner la forme
         Sprite sprite(texture);
         window.draw(sprite);
-        window.draw(changeColor0.display(Color::Black));
-        window.draw(changeColor1.display(Color::Blue));
-        window.draw(changeColor2.display(Color::Cyan));
-        window.draw(changeColor3.display(Color::Green));
-        window.draw(changeColor4.display(Color::Magenta));
-        window.draw(changeColor5.display(Color::Red));
-        window.draw(changeColor6.display(Color::White));
-        window.draw(changeColor7.display(Color::Yellow));
-        window.draw(square.display(Color::Black));
+        window.draw(changeColor0.display(Color::Black, Color::Black));
+        window.draw(changeColor1.display(Color::Blue, Color::Black));
+        window.draw(changeColor2.display(Color::Cyan, Color::Black));
+        window.draw(changeColor3.display(Color::Green, Color::Black));
+        window.draw(changeColor4.display(Color::Magenta, Color::Black));
+        window.draw(changeColor5.display(Color::Red, Color::Black));
+        window.draw(changeColor6.display(Color::White, Color::Black));
+        window.draw(changeColor7.display(Color::Yellow, Color::Black));
+        window.draw(square.display(Color::White, Color::Black));
         // Afficher le contenu
         window.display();
     }

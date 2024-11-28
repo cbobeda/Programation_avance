@@ -9,11 +9,14 @@ bool button::check(int x, int y)
         return false;
 }
 
-sf::RectangleShape button::display(sf::Color couleur)
+sf::RectangleShape button::display(sf::Color couleur,sf::Color couleur2)
 {
     sf::RectangleShape rectangle(sf::Vector2f(height, width));
-    rectangle.setPosition(posX, posY);
+    rectangle.setPosition(posX +5 , posY + 5);
     rectangle.setFillColor(couleur);
+    rectangle.setOutlineThickness(5);
+    rectangle.setOutlineColor(couleur2);
+    
     return rectangle;
 }
 

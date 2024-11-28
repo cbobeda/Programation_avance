@@ -12,5 +12,5 @@ public:
     
     ~button() {};
     bool check(int x,int y);
-    sf::RectangleShape display(sf::Color couleur);
+    sf::RectangleShape display(sf::Color couleur,sf::Color couleur2);
 };
