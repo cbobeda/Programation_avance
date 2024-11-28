@@ -158,9 +158,10 @@ void main()
         }
         if (Keyboard::isKeyPressed(Keyboard::S))
         {
-            Image buffer;
-            buffer = texture.copyToImage();
-            imageBuffer.saveToFile("drawing.bmp");
+            if (imageBuffer.saveToFile("image.png"))
+            {
+                std::cout << "Image saved!" << std::endl;
+            }
         }
         texture.setSmooth(true);
         // Effacer la fenêtre
